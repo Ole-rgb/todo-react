@@ -14,19 +14,21 @@ function AddTodo() {
         let todo_description = document.getElementById("i_description").value;
         let todo_importance = document.getElementById("i_importance").value;
 
-        var todo = new Todo(todo_name, todo_dueTo, todo_completed, todo_description, todo_importance)
-        
-        console.log(todo_completed)
+        try { //if params are not instanciated properly the todo throws 
+            var todo = new Todo(todo_name, todo_dueTo, todo_completed, todo_description, todo_importance)
+            axios.post(URL + "/todo", todo.toJSON())
+                .then((response) => { /*console.log("done")*/})
+                .catch((err) => console.log(err))
+            
+        } catch (err) {
+            console.log(err)
+        }
 
-        axios.post(URL + "/", todo.toJSON())
-            .then((response) => { /*console.log("done")*/})
-            .catch((err) => (alert(err)))
-
-        document.getElementById("i_name").value = null;
-        document.getElementById("i_dueTo").value = null;
-        document.getElementById("i_completed").value = null;
-        document.getElementById("i_description").value = null;
-        document.getElementById("i_importance").value = null;
+        document.getElementById("i_name").value = "";
+        document.getElementById("i_dueTo").value = "";
+        document.getElementById("i_description").value = "";
+        document.getElementById("i_importance").value = 0;
+        //dont touch complete
     }
 
     return(

@@ -10,7 +10,7 @@ function TodoList() {
 
     
     const refreshTodo = () =>{
-        axios.get(URL + "/")
+        axios.get(URL + "/todo")
             .then((result) => {
                 setData(result.data);
             })

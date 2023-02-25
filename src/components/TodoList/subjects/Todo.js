@@ -1,14 +1,26 @@
 import Subject from "./Subject.js";
 
 class Todo extends Subject{
-    constructor(Name, DueTo, Completed, Description, Importance){
+    constructor(iName, iDueTo, iCompleted, iDescription, iImportance){
         super();
-        this._Name = Name;
-        this._Description = Description;
-        this._Completed = Completed;
-        
-        this._DueTo = DueTo;
-        this._Importance = Importance;
+        if (iName === "" || iName == null) {
+            throw new Error("Name cannot be empty")
+        }
+        if (iCompleted !== false || iCompleted !== true) {
+            throw new Error("Complete has wrong inputtype")
+        }
+        if (iDueTo === "" ||iDueTo == null) {
+            throw new Error("Due date cannot be empty")
+        }
+        if (iImportance === "" || iImportance == null) {
+            throw new Error("Importance cannot be empty")
+        }
+
+        this._Name = iName;
+        this._Description = iDescription;
+        this._Completed = iCompleted;
+        this._DueTo = iDueTo;
+        this._Importance = iImportance;   
     }
 
     setDue(DueTo){
@@ -29,7 +41,15 @@ class Todo extends Subject{
     }
 
     toJSON(){
-        var str = `{ "name": "${this._Name ? this._Name : "default"}",  "dueTo": ${this._DueTo ? this._DueTo : 0}, "completed": ${this._Completed === "on" ? false : true}, "description": "${this._Description ? this._Description : "default"}", "importance": ${this._Importance ? this._Importance : 0}}`;
+        // this._DueTo
+        
+        let dueTo = this._DueTo.split("-")//erst Jahr - dann monat - dann tag
+        let year = dueTo[0];
+        let month = dueTo[1];
+        let day = dueTo[2];
+         
+        var dateTimeFormat =`"${year}-${month}-${day}T00:00:00.000"`
+        var str = `{ "name": "${this._Name}",  "dueTo": ${dateTimeFormat}, "completed": ${this._Completed}, "description": "${this._Description}", "importance": ${this._Importance}}`;
         return JSON.parse(str)
     }
 }
