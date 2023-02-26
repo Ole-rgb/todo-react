@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Layout from './components/Layout.js'; 
@@ -12,10 +12,10 @@ import Register from './components/Pages/js/accounts/register/Register.js';
 import TodoLayout from './components/Pages/js/todo/TodoLayout.js';
 import AccountsLayout from './components/Pages/js/accounts/AccountsLayout.js';
 import PasswordLayout from './components/Pages/js/accounts/passwort/PasswordLayout.js';
+import FormWrapper from './components/FormWrapper.js';
 
 function App() {
-  const [user_id, setUser_id] = useState(4);
-
+  const user_id =4
   return (
     <BrowserRouter>
       <Routes>
@@ -29,8 +29,8 @@ function App() {
           </Route>
 
           <Route path='accounts' element={<AccountsLayout/>}>
-            <Route path="register" element={<Register />}/>
-            <Route path='login' element={<Login />} />
+            <Route path="register" element={<FormWrapper formType={<Register />} />} />
+            <Route path='login' element={<FormWrapper formType={<Login/>} />} />
             <Route path="password" element={<PasswordLayout />} >
               <Route path='reset' element={<ResetPW />} />
             </Route>
@@ -42,8 +42,5 @@ function App() {
     </BrowserRouter>
 );
 }
-
-        
-
 
 export default App;
