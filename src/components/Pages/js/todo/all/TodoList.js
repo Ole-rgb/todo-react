@@ -1,23 +1,23 @@
 import React, {useState, useEffect} from "react"
-import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css"
 
-import URL from "../../../../../URL";
+import axios from "../../../../../api/axios";
 import TodoListItem from "../../../../TodoListItem";
 
-function TodoList() {    
+function TodoList(props) {    
     const [data, setData] = useState();
 
     
     const refreshTodo = () =>{
-        axios.get(URL + "/todo")
+        axios.get(`/users/${props.user_id}`)
             .then((result) => {
-                setData(result.data);
+                setData(result.data.todos);
             })
             .catch((err) => {
                 console.log(err)
             })
     }
+
     useEffect(() => {
         refreshTodo()
     }, [])
