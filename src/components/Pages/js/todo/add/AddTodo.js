@@ -1,13 +1,13 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css"
 
 import Todo from "../../../../TodoList/subjects/Todo";
 import axios from '../../../../../api/axios';
-import AuthContext from '../../../../context/AuthProvider';
 import { Navigate } from 'react-router-dom';
+import useAuth from '../../../../../hooks/useAuth';
 
 function AddTodo() {
-    const { auth } = useContext(AuthContext)
+    const { auth } = useAuth()
     const [name, setName] = useState("")
     const [complete, setComplete] = useState(false)
     const [importance, setImportance] = useState(0)

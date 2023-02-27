@@ -1,18 +1,18 @@
-import React, { useState, useRef, useEffect, useContext } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
 import { Link } from "react-router-dom";
 
-import AuthContext from "../../../../context/AuthProvider";
 import axios from "../../../../../api/axios";
 import LoginUserNameField from "../../../../FormTextFields/LoginUserNameField"
 import LoginPasswordField from "../../../../FormTextFields/LoginPasswordField"
 import LoggedIn from "./LoggedIn";
+import useAuth from "../../../../../hooks/useAuth";
 
 const LOGIN_URL = "/auth"
 
 const Login = () => {
     //gets the value for the setAuth from the "gobal" AuthProvider
-    const { auth, setAuth } = useContext(AuthContext);
+    const { auth, setAuth } = useAuth;
 
     //sets focus on the username field after first render
     const userRef = useRef();

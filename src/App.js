@@ -23,12 +23,14 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
 
+          {/* Protected Routes*/}
           <Route path='todo' element={<TodoLayout />}>
             <Route index element={<TodoList />} />
             <Route path="all" element={<TodoList />} />
             <Route path='add' element={<AddTodo />} />
           </Route>
 
+          {/* Partially Protected Routes*/}
           <Route path='accounts' element={<AccountsLayout />}>
             <Route path="register" element={<FormWrapper formType={<Register />} />} />
             <Route path='login' element={<FormWrapper formType={<Login />} />} />
@@ -38,6 +40,7 @@ function App() {
             </Route>
           </Route>
 
+          {/* Catch all*/}
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

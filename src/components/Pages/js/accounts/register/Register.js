@@ -1,11 +1,11 @@
 import React from 'react'
-import { useRef, useState, useEffect, useContext } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import RegisterUserNameButton from '../../../../FormTextFields/RegisterUserNameField';
 import RegistrationPassword from '../../../../FormTextFields/RegistrationPassword';
 import RegistrationRepeatPassword from '../../../../FormTextFields/RegistrationRepeatPassword';
 import axios from '../../../../../api/axios';
-import AuthContext from '../../../../context/AuthProvider';
+import useAuth from '../../../../../hooks/useAuth';
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -13,7 +13,7 @@ const REGISTER_URL = '/users/';
 
 const Register = () => {
   
-  const {auth, setAuth} = useContext(AuthContext)
+  const {auth, setAuth} = useAuth()
   const userRef = useRef();
   const errRef = useRef();
 

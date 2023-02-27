@@ -1,10 +1,9 @@
 import React from 'react'
-import { useContext } from 'react'
-import AuthContext from '../../../../context/AuthProvider'
 import { Navigate } from 'react-router-dom';
+import useAuth from '../../../../../hooks/useAuth';
 
 function Logout() {
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth, setAuth } = useAuth();
   const handleLogout = () => {
     setAuth({username:"", password:"", accessToken:null});
   }

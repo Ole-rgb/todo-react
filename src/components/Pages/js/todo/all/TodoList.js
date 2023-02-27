@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
 
 import axios from "../../../../../api/axios";
 import TodoListItem from "../../../../TodoListItem";
-import AuthContext from "../../../../context/AuthProvider";
 import { Navigate } from "react-router-dom";
+import useAuth from "../../../../../hooks/useAuth";
 
 function TodoList() {
     const [data, setData] = useState();
-    const { auth } = useContext(AuthContext);
+    const { auth } = useAuth();
 
     const refreshTodo = () => {
         axios.get(`/user/todo?token=${auth.accessToken}`, {
