@@ -1,16 +1,19 @@
 import React from 'react'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import RegisterUserNameButton from '../../../../FormTextFields/RegisterUserNameField';
 import RegistrationPassword from '../../../../FormTextFields/RegistrationPassword';
 import RegistrationRepeatPassword from '../../../../FormTextFields/RegistrationRepeatPassword';
 import axios from '../../../../../api/axios';
+import AuthContext from '../../../../context/AuthProvider';
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const REGISTER_URL = '/users/';
 
 const Register = () => {
+  
+  const {auth, setAuth} = useContext(AuthContext)
   const userRef = useRef();
   const errRef = useRef();
 
@@ -27,7 +30,6 @@ const Register = () => {
   const [matchFocus, setMatchFocus] = useState(false);
 
   const [errMsg, setErrMsg] = useState('');
-  const [success, setSuccess] = useState(false);
 
 
   useEffect(() => {
@@ -43,10 +45,12 @@ const Register = () => {
 
   //check if the password is valid
   useEffect(() => {
-    const result = PWD_REGEX.test(password);
-    setValidPassword(result);
-    const match = (password === matchPassword);
-    setValidMatch(match);
+    if(!auth.accessToken){
+      const result = PWD_REGEX.test(password);
+      setValidPassword(result);
+      const match = (password === matchPassword);
+      setValidMatch(match);
+    }
   }, [password, matchPassword])
 
   //reset error msg, if the username. the pw or the matchpw changes
@@ -70,9 +74,9 @@ const Register = () => {
         "user_password": password 
       }
       ).then((response)=> {
-          // set global 
-          setSuccess(true)
-      }
+        const accessToken = response.data.accessToken
+        setAuth({ username, password, accessToken })
+        }
       ).catch((err) => {
         setErrMsg(err.response.data.detail)
       }
@@ -81,10 +85,10 @@ const Register = () => {
 
   return (
     <>
-      {success ? (
+      {auth.accessToken ? (
         <section>
           <h1>Success!</h1>
-          <Link to="/accounts/login">Go To Login</Link>
+          <Link to="/">You are logged in</Link>
         </section>
       ) :
         (<>

@@ -4,15 +4,15 @@ import { Link } from "react-router-dom";
 
 import AuthContext from "../../../../context/AuthProvider";
 import axios from "../../../../../api/axios";
-import LoginUserNameField from "../../../../FormTextFields/LoginUserNameField";
-import LoginPasswordField from "../../../../FormTextFields/LoginPasswordField";
+import LoginUserNameField from "../../../../FormTextFields/LoginUserNameField"
+import LoginPasswordField from "../../../../FormTextFields/LoginPasswordField"
+import LoggedIn from "./LoggedIn";
+
 const LOGIN_URL = "/auth"
 
 const Login = () => {
     //gets the value for the setAuth from the "gobal" AuthProvider
-    const { setAuth } = useContext(AuthContext);
-    //this will be removed later (if auth, then dont show this!) 
-    const [success, setSuccess] = useState(false);
+    const { auth, setAuth } = useContext(AuthContext);
 
     //sets focus on the username field after first render
     const userRef = useRef();
@@ -26,7 +26,9 @@ const Login = () => {
 
     //focuses the username field in the beginning
     useEffect(() => {
-        userRef.current.focus()
+        if (!auth.accessToken) {
+            userRef.current.focus()
+        }
     }, [])
 
     //if the user changes the username or password, remove the error message
@@ -39,31 +41,25 @@ const Login = () => {
         e.preventDefault(); //prevent default behaviour of the form (that would reload the page)
 
         axios.post(LOGIN_URL, {
-            "username":username,
-            "user_password": password 
+            "username": username,
+            "user_password": password
         }).then((response) => {
-                // var accessToken =response.data.AuthToken
-                // setAuth(accessToken);
-                // roles?
-                setSuccess(true)
-            })
+            // roles?
+            const accessToken = response.data.accessToken
+            setAuth({ username, password, accessToken })
+        })
             .catch((err) => {
-                setErrMsg(err.message);
-            }
-            )
+                setErrMsg(err.response.data.detail);
+            })
         errRef.current.focus()
         setPassword("");
         setUsername("");
     }
-
+    //TODO figure out what to use instead of "auth.accessToken" to determine that im logged in 
     return (
         <>
-            {success ? (
-                <section>
-                    <h1>You are logged in</h1>
-                    <br />
-                    <Link to="/">Go To Home </Link>
-                </section>
+            {auth.accessToken ? (
+                <LoggedIn/>
             ) : (
                 <>
                     <div className="mb-md-5 mt-md-4 pb-5">
@@ -75,7 +71,7 @@ const Login = () => {
                                 userRef={userRef} username={username} setUsername={(e) => setUsername(e)}
                             />
                             <LoginPasswordField
-                                password={password} setPassword={(e)=> setPassword(e)}
+                                password={password} setPassword={(e) => setPassword(e)}
                             />
                             <p className="small mb-5 pb-lg-2">
                                 <Link className="text-white-50" to="/accounts/password/reset">Forgot password?</Link>
